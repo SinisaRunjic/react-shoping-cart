@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import formatCurrencly from "../util";
+import formatCurrency from "../util";
 
 class Product extends Component {
     render() {
@@ -17,9 +17,9 @@ class Product extends Component {
                                 </a>
                                 <div className="product-price">
                                     <div>
-                                        {formatCurrencly(product.price)}
+                                        {formatCurrency(product.price)}
                                     </div>
-                                    <button className="button primary">Add To Cart</button>
+                                    <button className="button primary" onClick={()=>this.props.addToCart(product)}>Add To Cart</button>
                                 </div>
                             </div>
                         </li>
