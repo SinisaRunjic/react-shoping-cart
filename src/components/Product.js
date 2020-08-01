@@ -95,4 +95,4 @@ class Product extends Component {
     }
 }
 
-export default connect((state) => ({ products: state.products.items }), { fetchProducts })(Product);
+export default connect((state) => ({ products: state.products.filteredItems }), { fetchProducts })(Product);
