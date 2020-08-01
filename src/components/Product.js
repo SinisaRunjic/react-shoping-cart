@@ -3,6 +3,8 @@ import formatCurrency from "../util";
 import Flip from 'react-reveal/Flip';
 import Zoom from 'react-reveal/Zoom';
 import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../actions/productActions';
 
 class Product extends Component {
     constructor(props) {
@@ -10,6 +12,9 @@ class Product extends Component {
         this.state = {
             product: null,
         }
+    }
+    componentDidMount() {
+        this.props.fetchProducts();
     }
 
     openModal = (product) => {
@@ -23,26 +28,29 @@ class Product extends Component {
         return (
             <div>
                 <ul className="products">
-                    {this.props.products.map(product => (
-                        <Flip right>
-                            <li key={product._id}>
-                                <div className="product">
-                                    <a href={'#' + product._id} onClick={() => this.openModal(product)}>
-                                        <img src={product.image} alt={product.title}></img>
-                                        <p>
-                                            {product.title}
-                                        </p>
-                                    </a>
-                                    <div className="product-price">
-                                        <div>
-                                            {formatCurrency(product.price)}
+                    {!this.props.products ? <div>LOADING.....</div> :
+                        (
+                            this.props.products.map(product => (
+                                <Flip right>
+                                    <li key={product._id}>
+                                        <div className="product">
+                                            <a href={'#' + product._id} onClick={() => this.openModal(product)}>
+                                                <img src={product.image} alt={product.title}></img>
+                                                <p>
+                                                    {product.title}
+                                                </p>
+                                            </a>
+                                            <div className="product-price">
+                                                <div>
+                                                    {formatCurrency(product.price)}
+                                                </div>
+                                                <button className="button primary" onClick={() => this.props.addToCart(product)}>Add To Cart</button>
+                                            </div>
                                         </div>
-                                        <button className="button primary" onClick={() => this.props.addToCart(product)}>Add To Cart</button>
-                                    </div>
-                                </div>
-                            </li>
-                        </Flip>
-                    ))}
+                                    </li>
+                                </Flip>
+                            ))
+                        )}
                 </ul>
                 {product && (
                     <Modal isOpen={true} onRequestClose={this.closeModal}>
@@ -87,4 +95,4 @@ class Product extends Component {
     }
 }
 
-export default Product;
+export default connect((state) => ({ products: state.products.items }), { fetchProducts })(Product);
