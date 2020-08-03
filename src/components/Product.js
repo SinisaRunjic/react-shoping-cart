@@ -5,6 +5,7 @@ import Zoom from 'react-reveal/Zoom';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions/productActions';
+import { addToCart } from '../actions/cartAction';
 
 class Product extends Component {
     constructor(props) {
@@ -44,7 +45,9 @@ class Product extends Component {
                                                 <div>
                                                     {formatCurrency(product.price)}
                                                 </div>
-                                                <button className="button primary" onClick={() => this.props.addToCart(product)}>Add To Cart</button>
+                                                <button className="button primary" onClick={() => this.props.addToCart(product)}>
+                                                    Add To Cart
+                                                </button>
                                             </div>
                                         </div>
                                     </li>
@@ -95,4 +98,9 @@ class Product extends Component {
     }
 }
 
-export default connect((state) => ({ products: state.products.filteredItems }), { fetchProducts })(Product);
+export default connect((state) => ({
+    products: state.products.filteredItems
+}), {
+    fetchProducts,
+    addToCart
+})(Product);

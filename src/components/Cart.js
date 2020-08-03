@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import formatCurrency from '../util';
 import Fade from 'react-reveal/Fade'
+import { connect } from 'react-redux';
+import { removeFromCart } from '../actions/cartAction';
 
 class Cart extends Component {
     constructor(props) {
@@ -49,7 +51,7 @@ class Cart extends Component {
                                             <div>{item.title}</div>
                                             <div className="right">
                                                 {formatCurrency(item.price)} x {item.count} {" "}
-                                                <button className="button primary" onClick={() => this.props.removeFromCart(item)}>
+                                                <button className="button primary" onClick={() => {this.props.removeFromCart(item)}}>
                                                     Remove
                                         </button>
                                             </div>
@@ -126,4 +128,9 @@ class Cart extends Component {
     }
 }
 
-export default Cart;
+export default connect(
+    (state) => ({
+        cartItems: state.cart.cartItems,
+    }), {
+    removeFromCart
+})(Cart);
